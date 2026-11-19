@@ -1,0 +1,17 @@
+NEON TITAN - Windows install
+============================
+
+1. Copy the folder "NEON TITAN.vst3" into:
+      C:\Program Files\Common Files\VST3\
+   (Windows will ask for admin permission. Click Continue.)
+
+2. Open Maschine 2 (update it in Native Access first: third-party VST3 needs a recent version).
+   File > Preferences > Plug-ins > Locations: make sure the VST3 folder above is listed.
+   Click Rescan.
+
+3. In Maschine: click a Sound slot > Plug-in slot > Instrument > User (or Other) > NEON TITAN.
+   Open the plug-in window to choose presets from the drop-down at the top right.
+
+Optional: "NEON TITAN.exe" runs the synth on its own (no Maschine needed), so you can test your sound card or MIDI keyboard.
+
+Windows SmartScreen may warn that the plug-in is from an unknown publisher, because it isn't code-signed. That's expected for a self-built plug-in.

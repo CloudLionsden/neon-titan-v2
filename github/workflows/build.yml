@@ -1,0 +1,57 @@
+name: Build NEON TITAN
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake -S . -B build -A x64 -DTITAN_FORMATS="VST3;Standalone"
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          Copy-Item -Recurse "build/NeonTitan_artefacts/Release/VST3/NEON TITAN.vst3" "dist/"
+          Copy-Item "build/NeonTitan_artefacts/Release/Standalone/NEON TITAN.exe" "dist/"
+          Copy-Item "INSTALL_WINDOWS.txt" "dist/"
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEON-TITAN-Windows
+          path: dist/
+
+  mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure (Apple Silicon + Intel)
+        run: cmake -S . -B build -G Xcode -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 -DTITAN_FORMATS="VST3;AU;Standalone"
+
+      - name: Build
+        run: cmake --build build --config Release -- -quiet
+
+      - name: Package
+        run: |
+          mkdir -p dist
+          cp -R "build/NeonTitan_artefacts/Release/VST3/NEON TITAN.vst3" dist/
+          cp -R "build/NeonTitan_artefacts/Release/AU/NEON TITAN.component" dist/
+          cp -R "build/NeonTitan_artefacts/Release/Standalone/NEON TITAN.app" dist/
+          cp INSTALL_MAC.txt dist/
+          cd dist && zip -qry ../NEON-TITAN-Mac.zip . 
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEON-TITAN-Mac
+          path: NEON-TITAN-Mac.zip

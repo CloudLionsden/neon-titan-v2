@@ -1,0 +1,13 @@
+NEON TITAN - Mac install
+========================
+
+1. Copy "NEON TITAN.component" to:  /Library/Audio/Plug-Ins/Components/
+   Copy "NEON TITAN.vst3" to:       /Library/Audio/Plug-Ins/VST3/
+   (In Finder: Go > Go to Folder..., paste the path. macOS asks for your password.)
+
+2. The plug-in isn't code-signed, so macOS may block it. Open Terminal and run:
+      sudo xattr -cr "/Library/Audio/Plug-Ins/Components/NEON TITAN.component"
+      sudo xattr -cr "/Library/Audio/Plug-Ins/VST3/NEON TITAN.vst3"
+
+3. Open Maschine (updated through Native Access) > Preferences > Plug-ins > Rescan.
+   Maschine on Mac loads the AU version (the .component).
